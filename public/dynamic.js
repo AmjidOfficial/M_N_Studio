@@ -5,8 +5,8 @@ fetch('/api/site').then(r=>r.ok?r.json():null).then(data=>{
  const s=data.settings||{};
  if(s.name)document.querySelectorAll('.brand-copy').forEach(el=>{el.innerHTML=esc(s.name.toUpperCase())+'<small>STUDIO</small>'});
  if(s.location)document.querySelectorAll('[data-location]').forEach(el=>el.textContent=s.location);
- if(s.whatsapp){const digits=s.whatsapp.replace(/\D/g,'');document.querySelectorAll('[data-whatsapp]').forEach(el=>{el.href='https://wa.me/'+digits;el.textContent=s.whatsapp})}
- if(s.tiktok)document.querySelectorAll('[data-tiktok]').forEach(el=>el.href=s.tiktok);
+ if(s.whatsapp){const digits=s.whatsapp.replace(/\D/g,'');document.querySelectorAll('a[href^="https://wa.me/"]').forEach(el=>{el.href='https://wa.me/'+digits});document.querySelectorAll('[data-whatsapp]').forEach(el=>{el.href='https://wa.me/'+digits;el.textContent=s.whatsapp})}
+ if(s.tiktok)document.querySelectorAll('a[href*="tiktok.com"]').forEach(el=>el.href=s.tiktok);
  if(s.tagline){const el=document.querySelector('[data-tagline]');if(el)el.textContent=s.tagline}
  if(s.primary)document.documentElement.style.setProperty('--wine',s.primary);
  if(s.accent)document.documentElement.style.setProperty('--gold',s.accent);
