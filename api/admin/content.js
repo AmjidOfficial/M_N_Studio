@@ -32,7 +32,8 @@ export default async function(req,res){
   const fields=cfg.fields.filter(k=>Object.prototype.hasOwnProperty.call(req.body||{},k));
   if(!fields.length)return res.status(400).json({error:'No changes supplied.'});
   const vals=fields.map(k=>req.body[k]);vals.push(id);
-  await db.query('UPDATE '+cfg.table+' SET '+fields.map((k,i)=>k+'=$'+(i+1)).join(',')+',updated_at=now() WHERE id=$'+vals.length,vals);
+  const stamp=['services','offers'].includes(type)?',updated_at=now()':'';
+  await db.query('UPDATE '+cfg.table+' SET '+fields.map((k,i)=>k+'=$'+(i+1)).join(',')+stamp+' WHERE id=$'+vals.length,vals);
   return res.json({ok:true});
  }
  if(req.method==='DELETE'){
