@@ -17,5 +17,7 @@ fetch('/api/site').then(r=>r.ok?r.json():null).then(data=>{
  if(offers&&data.offers?.length){offers.innerHTML='<div class="section-tag"><span>STUDIO OFFERS</span><span>OWNER-PUBLISHED</span></div><div class="section-head"><h2 class="section-title">A little extra<br><em>for your moment.</em></h2></div><div class="service-grid">'+data.offers.map(x=>'<article class="service-card"><div class="service-info"><div><p class="eyebrow">CURRENT OFFER</p><h3>'+esc(x.title)+'</h3><p>'+esc(x.details)+'</p></div></div></article>').join('')+'</div>'}
  const gallery=document.querySelector('#publishedGallery');
  if(gallery&&data.gallery?.length){gallery.innerHTML='<div class="gallery-grid">'+data.gallery.map(x=>'<figure><img src="'+esc(x.image_url)+'" alt="'+esc(x.title)+'" loading="lazy"><figcaption class="note">'+esc(x.title)+' · '+(x.is_real_studio_work?'Studio work':'Editorial inspiration')+'</figcaption></figure>').join('')+'</div>'}
+ const reviews=document.querySelector('#publishedReviews');
+ if(reviews&&data.reviews?.length){reviews.innerHTML='<div class="service-grid">'+data.reviews.map(x=>'<article class="service-card"><div class="service-info"><div><p class="eyebrow">CLIENT FEEDBACK</p><h3>'+esc(x.customer_name)+'</h3><p>'+esc(x.review_text)+'</p>'+(x.rating?'<strong>'+('★'.repeat(Math.max(0,Math.min(5,Number(x.rating)))))+'</strong>':'')+'</div></div></article>').join('')+'</div>'}
 }).catch(()=>{});
 })();
