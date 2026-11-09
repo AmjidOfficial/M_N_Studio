@@ -1,0 +1,6 @@
+{
+    "path": "api/site.js",
+    "text": "import { db } from 'hatchable';\nexport const access='public';\nexport const methods=['GET'];\nexport default async function(req,res){\n const [settings,services,offers,gallery]=await Promise.all([\n  db.query('SELECT setting_value FROM studio_settings WHERE setting_key=$1',['brand']),\n  db.query('SELECT id,name,category,description,price_amount,price_note,image_url FROM studio_services WHERE is_published=true ORDER BY sort_order,id'),\n  db.query('SELECT id,title,details,starts_at,ends_at FROM studio_offers WHERE is_published=true AND (starts_at IS NULL OR starts_at<=CURRENT_DATE) AND (ends_at IS NULL OR ends_at>=CURRENT_DATE) ORDER BY id DESC'),\n  db.query('SELECT id,title,image_url,category,is_real_studio_work FROM studio_gallery WHERE is_published=true ORDER BY sort_order,id')\n ]);\n res.json({settings:settings.rows[0]?.setting_value||null,services:services.rows,offers:offers.rows,gallery:gallery.rows});\n}",
+    "hash": "72e6cda2a3f43882b0f933beb45a131174a91bc0f7f11b0ca1a347baf18f1ada",
+    "total_lines": 12
+}
