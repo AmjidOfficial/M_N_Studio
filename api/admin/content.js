@@ -19,7 +19,7 @@ export default async function(req,res){
   return res.status(405).json({error:'Bookings can only be updated.'});
  }
  if(req.method==='POST'){
-  const values=cfg.fields.map(k=>req.body?.[k]??null);
+  const values=cfg.fields.map(k=>{const v=req.body?.[k]??null;if(['starts_at','ends_at'].includes(k)&&v==='')return null;return v;});
   const required=type==='services'?['name','category']:type==='offers'?['title']:type==='gallery'?['title','image_url']:['customer_name','review_text'];
   if(required.some(k=>!String(req.body?.[k]??'').trim()))return res.status(400).json({error:'Please complete the required fields.'});
   const cols=cfg.fields.join(',');
